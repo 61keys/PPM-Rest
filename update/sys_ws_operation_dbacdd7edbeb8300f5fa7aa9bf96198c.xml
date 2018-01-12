@@ -7,10 +7,11 @@
         <default_operation_uri/>
         <enforce_acl/>
         <http_method>POST</http_method>
-        <name>Add PPM Project</name>
+        <name>Update PPM</name>
         <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
 	
 	// implement resource here
+	var sysID =  request.body.data.u_sysID;
 	var short_description = request.body.data.u_short_description;// Project Name ("Adding Functionality To Product", "Custom Reporting for Blabla") 200max
 	var project_manager = request.body.data.u_project_manager;//Project Manager;
 	var primary_portfolio = request.body.data.u_primary_portfolio;//Portfolio;
@@ -24,13 +25,13 @@
 	var end_date = request.body.data.u_primary_end_date;//Planned End Date;
 	var duration = request.body.data.u_duration;//Planned Duration days and hours 00:00:00;
 	
-	var reponseStatus = '';
+	var projectUpdateStatus = '';
 	
 	var prtg = new SH_PPM();
-	var projectStatus = prtg.addPPM(short_description,project_manager,primary_portfolio,primary_program,description,cookbookID,schedule,start_date,end_date,duration);	
-	
+	var prtgStatus = prtg.addPPM(sysID,short_description,project_manager,primary_portfolio,primary_program,description,cookbookID,schedule,start_date,end_date,duration);	
 	
 	ppmResponse = {
+		u_sysID:sysID,
 		u_short_description : short_description,
 		u_project_manager : project_manager,
 		u_primary_portfolio : primary_portfolio,
@@ -41,37 +42,34 @@
 		u_start_date : start_date,
 		u_primary_end_date : end_date,
 		u_duration : duration,
-		u_projectStatus: projectStatus
-	};
+		u_projectUpdateStatus: projectUpdateStatus
+	};	
 	
-	
-	return ppmResponse;
-	
-	
+	return ppmResponse;	
 	
 })(request, response);]]></operation_script>
-        <operation_uri>/api/x_125992_usan_ppm/createproject/addPPM</operation_uri>
+        <operation_uri>/api/x_125992_usan_ppm/createproject/updatePPM</operation_uri>
         <produces>application/json,application/xml,text/xml</produces>
         <produces_customized>false</produces_customized>
-        <relative_path>/addPPM</relative_path>
+        <relative_path>/updatePPM</relative_path>
         <request_example/>
         <requires_acl_authorization>false</requires_acl_authorization>
         <requires_authentication>true</requires_authentication>
         <short_description/>
         <sys_class_name>sys_ws_operation</sys_class_name>
-        <sys_created_by>admin</sys_created_by>
-        <sys_created_on>2018-01-09 21:00:35</sys_created_on>
+        <sys_created_by>steven.holt</sys_created_by>
+        <sys_created_on>2018-01-12 21:44:36</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
-        <sys_id>fd04fdfddba303006bffd7a0cf9619c7</sys_id>
-        <sys_mod_count>7</sys_mod_count>
-        <sys_name>Add PPM Project</sys_name>
+        <sys_id>dbacdd7edbeb8300f5fa7aa9bf96198c</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Update PPM</sys_name>
         <sys_package display_value="Usan PPM RestAPI" source="x_125992_usan_ppm">1503fd3ddba303006bffd7a0cf961931</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Usan PPM RestAPI">1503fd3ddba303006bffd7a0cf961931</sys_scope>
-        <sys_update_name>sys_ws_operation_fd04fdfddba303006bffd7a0cf9619c7</sys_update_name>
+        <sys_update_name>sys_ws_operation_dbacdd7edbeb8300f5fa7aa9bf96198c</sys_update_name>
         <sys_updated_by>steven.holt</sys_updated_by>
-        <sys_updated_on>2018-01-12 22:30:47</sys_updated_on>
+        <sys_updated_on>2018-01-12 22:29:45</sys_updated_on>
         <web_service_definition display_value="Create CookBook Project">d8d37dfddba303006bffd7a0cf9619df</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>

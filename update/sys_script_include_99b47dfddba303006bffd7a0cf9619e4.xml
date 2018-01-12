@@ -9,7 +9,7 @@
         <name>SH_PPM</name>
         <script><![CDATA[var SH_PPM = Class.create();
 SH_PPM.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
-	addPPM: function(short_description,project_manager,primary_portfolio,primary_program,description,schedule,start_date,end_date,duration){
+	addPPM: function(short_description,project_manager,primary_portfolio,primary_program,description,cookbookID,schedule,start_date,end_date,duration){
 		var proj = new GlideRecord('pm_project');
 		proj.initialize();
 		proj.short_description = short_description; //Project Name;
@@ -21,6 +21,8 @@ SH_PPM.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		proj.percent_complete = 0; //Percent Complete;
 		proj.calculation = 'automatic'; //Calculation;
 		proj.description =  description; //Description;
+		proj.u_internal_project_id = cookbookID; //Project ID;
+		proj.setValue('company', 'USAN');
 		
 		//Dates
 		proj.setValue('schedule', schedule); //Shedule
@@ -40,6 +42,89 @@ SH_PPM.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		
 	},
 	
+	updatePPM:	function(sysID,short_description,project_manager,primary_portfolio,primary_program,description,cookbookID,schedule,start_date,end_date,duration){
+		var proj = new GlideRecord('pm_project');
+		proj.addQuery('sys_id',sysID);
+		proj.query();
+		if(proj.next()){
+		proj.short_description = short_description; //Project Name;
+		proj.setValue('project_manager' , project_manager); //Project Manager;
+		proj.setValue('primary portfolio' , primary_portfolio); //Portfolio;
+		proj.setValue('primary_program' , primary_program); //Program;
+		proj.setValue('cmdb_ci',''); //Configuration Item;
+		proj.state = -5; //State - pending
+		proj.percent_complete = 0; //Percent Complete;
+		proj.calculation = 'automatic'; //Calculation;
+		proj.description =  description; //Description;
+		proj.u_internal_project_id = cookbookID; //Project ID;
+		proj.setValue('company', 'USAN');
+		
+		//Dates
+		proj.setValue('schedule', schedule); //Shedule
+		proj.start_date = start_date; //Planned Start Date;
+		proj.end_date = end_date; //Planned End Date;
+		proj.duration = duration;//Planned Duration days and hours 00:00:00;
+		proj.update();
+		}
+		
+		var error = proj.getLastErrorMessage();
+		
+		if(error == null){
+			status = 'update success';
+		}else{
+			status = error;
+		}
+		return status;	
+		
+	},
+	
+	createTask:function(parent_sys_id,short_description,assigned_to,time_constraint,category,description,start_date,end_date,duration){
+		var taskId ='';
+		var proj = new GlideRecord('pm_project_task');
+		proj.initialize();
+		if(time_constraint =='asap'){	
+		proj.parent = parent_sys_id;
+		proj.short_description = short_description; //Project Name;		
+		proj.state = -5; //State - pending
+		proj.percent_complete = 0; //Percent Complete;		
+		proj.description =  description; //Description;		
+		proj.setValue('assigned_to', assigned_to);		
+		proj.time_constraint = time_constraint;
+		proj.category = category;
+		//Dates
+		proj.setValue('schedule', schedule); //Shedule		
+		proj.end_date = end_date; //Planned End Date;
+		proj.duration = duration;//Planned Duration days and hours 00:00:00;
+		taskId = proj.insert();
+		}else{
+		
+		proj.parent = parent_sys_id;
+		proj.short_description = short_description; //Project Name;		
+		proj.state = -5; //State - pending
+		proj.percent_complete = 0; //Percent Complete;		
+		proj.description =  description; //Description;		
+		proj.setValue('assigned_to', assigned_to);		
+		proj.time_constraint = time_constraint;
+		proj.category = category;
+		//Dates
+		proj.setValue('schedule', schedule); //Shedule
+		proj.start_date = start_date; //Planned Start Date;
+		proj.end_date = end_date; //Planned End Date;
+		proj.duration = duration;//Planned Duration days and hours 00:00:00;
+		taskId = proj.insert();
+		}
+		
+		
+		var error = proj.getLastErrorMessage();
+		if(error == null){
+			status = taskId;
+		}else{
+			status = error;
+		}
+		return status;	
+		
+	},
+	
 	type: 'SH_PPM'
 });]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
@@ -47,14 +132,14 @@ SH_PPM.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_on>2018-01-09 20:53:33</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>99b47dfddba303006bffd7a0cf9619e4</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>SH_PPM</sys_name>
         <sys_package display_value="Usan PPM RestAPI" source="x_125992_usan_ppm">1503fd3ddba303006bffd7a0cf961931</sys_package>
         <sys_policy>read</sys_policy>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Usan PPM RestAPI">1503fd3ddba303006bffd7a0cf961931</sys_scope>
         <sys_update_name>sys_script_include_99b47dfddba303006bffd7a0cf9619e4</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-01-09 21:30:48</sys_updated_on>
+        <sys_updated_by>steven.holt</sys_updated_by>
+        <sys_updated_on>2018-01-12 22:57:28</sys_updated_on>
     </sys_script_include>
 </record_update>
