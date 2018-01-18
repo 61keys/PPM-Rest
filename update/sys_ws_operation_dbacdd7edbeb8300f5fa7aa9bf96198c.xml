@@ -13,6 +13,7 @@
 	// implement resource here
 	var sysID =  request.body.data.u_sysID;
 	var short_description = request.body.data.u_short_description;// Project Name ("Adding Functionality To Product", "Custom Reporting for Blabla") 200max
+	var product_type = request.body.data.u_product_type;
 	var project_manager = request.body.data.u_project_manager;//Project Manager;
 	var primary_portfolio = request.body.data.u_primary_portfolio;//Portfolio;
 	var primary_program = request.body.data.u_primary_program;//Program;
@@ -28,11 +29,12 @@
 	var projectUpdateStatus = '';
 	
 	var prtg = new SH_PPM();
-	var prtgStatus = prtg.addPPM(sysID,short_description,project_manager,primary_portfolio,primary_program,description,cookbookID,schedule,start_date,end_date,duration);	
+	var prtgStatus = prtg.addPPM(sysID,short_description,product_type,project_manager,primary_portfolio,primary_program,description,cookbookID,schedule,start_date,end_date,duration);	
 	
 	ppmResponse = {
 		u_sysID:sysID,
 		u_short_description : short_description,
+		u_product_type:product_type,
 		u_project_manager : project_manager,
 		u_primary_portfolio : primary_portfolio,
 		u_primary_program : primary_program,
@@ -61,7 +63,7 @@
         <sys_created_on>2018-01-12 21:44:36</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>dbacdd7edbeb8300f5fa7aa9bf96198c</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>Update PPM</sys_name>
         <sys_package display_value="Usan PPM RestAPI" source="x_125992_usan_ppm">1503fd3ddba303006bffd7a0cf961931</sys_package>
         <sys_policy/>
@@ -69,7 +71,7 @@
         <sys_scope display_value="Usan PPM RestAPI">1503fd3ddba303006bffd7a0cf961931</sys_scope>
         <sys_update_name>sys_ws_operation_dbacdd7edbeb8300f5fa7aa9bf96198c</sys_update_name>
         <sys_updated_by>steven.holt</sys_updated_by>
-        <sys_updated_on>2018-01-12 22:29:45</sys_updated_on>
+        <sys_updated_on>2018-01-18 19:10:32</sys_updated_on>
         <web_service_definition display_value="Create CookBook Project">d8d37dfddba303006bffd7a0cf9619df</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>
